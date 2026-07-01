@@ -352,8 +352,166 @@
   .grid-empty-cell{ color:#c3bb9f; font-size:11px; font-style:italic; }
 
   @media print{
-    header .search-zone, .view-toggle, footer, .now-banner{ display:none; }
+    header .search-zone, .view-toggle, footer, .now-banner, .chat-fab, .chat-panel{ display:none; }
     body{ background:#fff; }
+  }
+
+  /* ===== CHAT BOT ===== */
+  .chat-fab{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(27,42,74,0.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    transition:transform .15s ease;
+  }
+  .chat-fab:hover{ transform:scale(1.06); }
+  .chat-fab svg{ width:24px; height:24px; }
+  .chat-fab .dot-badge{
+    position:absolute; top:6px; right:6px;
+    width:9px;height:9px;border-radius:50%;
+    background:#e0855a; border:2px solid var(--paper);
+  }
+
+  .chat-panel{
+    position:fixed;
+    right:22px;
+    bottom:90px;
+    width:360px;
+    max-width:calc(100vw - 32px);
+    height:480px;
+    max-height:calc(100vh - 140px);
+    background:var(--paper-card);
+    border:2px solid var(--ink);
+    border-radius:6px;
+    box-shadow:0 12px 40px rgba(27,42,74,0.28);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:100;
+  }
+  .chat-panel.open{ display:flex; }
+
+  .chat-head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .chat-head .title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:15px;
+    flex:1;
+  }
+  .chat-head .subtitle{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:#c7b98f;
+    display:block;
+    margin-top:1px;
+  }
+  .chat-head button{
+    background:none;border:none;color:var(--paper);
+    cursor:pointer; opacity:.75; font-size:18px; line-height:1;
+    padding:4px;
+  }
+  .chat-head button:hover{ opacity:1; }
+
+  .chat-body{
+    flex:1;
+    overflow-y:auto;
+    padding:14px 14px 6px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    background:
+      radial-gradient(circle at 90% 0%, rgba(184,134,63,0.06), transparent 50%),
+      var(--paper);
+  }
+  .msg{
+    max-width:85%;
+    padding:9px 13px;
+    border-radius:10px;
+    font-size:13px;
+    line-height:1.5;
+  }
+  .msg.bot{
+    align-self:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-bottom-left-radius:2px;
+  }
+  .msg.user{
+    align-self:flex-end;
+    background:var(--ink);
+    color:var(--paper);
+    border-bottom-right-radius:2px;
+  }
+  .msg .mono{ font-family:'JetBrains Mono',monospace; font-weight:700; }
+  .msg-suggestions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-self:flex-start;
+    max-width:100%;
+  }
+  .msg-suggestions button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    border:1px solid var(--line);
+    background:var(--paper-card);
+    color:var(--ink-soft);
+    padding:6px 10px;
+    border-radius:14px;
+    cursor:pointer;
+  }
+  .msg-suggestions button:hover{ border-color:var(--brass); color:var(--ink); }
+
+  .chat-input-row{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    border-top:1px solid var(--line);
+    background:var(--paper-card);
+  }
+  .chat-input-row input{
+    flex:1;
+    border:1.5px solid var(--line);
+    border-radius:18px;
+    padding:9px 14px;
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+    outline:none;
+  }
+  .chat-input-row input:focus{ border-color:var(--brass); }
+  .chat-input-row button{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    width:36px;height:36px;
+    border-radius:50%;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .chat-input-row button:hover{ background:var(--brass-deep); }
+
+  @media (max-width:480px){
+    .chat-panel{ right:12px; left:12px; width:auto; bottom:82px; }
+    .chat-fab{ right:16px; bottom:16px; }
   }
 
   footer{
@@ -406,6 +564,26 @@
 </div>
 
 <footer class="wrap">Data transcribed from the official Semester III master timetable · tap a day tag to filter</footer>
+
+<!-- ===== CHAT BOT ===== -->
+<button class="chat-fab" id="chatFab" aria-label="Open timetable assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span class="dot-badge"></span>
+</button>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <div class="title">Timetable Assistant<span class="subtitle">ask about any class, faculty, or room</span></div>
+    <button id="chatClose" aria-label="Close">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-row">
+    <input id="chatInput" type="text" placeholder="e.g. when is AI-A?" autocomplete="off">
+    <button id="chatSend" aria-label="Send">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+    </button>
+  </div>
+</div>
 
 <script src="data.js"></script>
 <script>
@@ -656,6 +834,211 @@
   render();
   updateNowBanner();
   setInterval(updateNowBanner, 60000);
+
+  /* =========================================================
+     CHAT BOT — free, rule-based, entirely client-side.
+     No API key, no network calls, no cost.
+     ========================================================= */
+  (function(){
+    const fab = document.getElementById('chatFab');
+    const panel = document.getElementById('chatPanel');
+    const closeBtn = document.getElementById('chatClose');
+    const body = document.getElementById('chatBody');
+    const input = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('chatSend');
+
+    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const dayAliases = {
+      monday:"Monday", mon:"Monday", tuesday:"Tuesday", tue:"Tuesday", tues:"Tuesday",
+      wednesday:"Wednesday", wed:"Wednesday", thursday:"Thursday", thu:"Thursday", thurs:"Thursday",
+      friday:"Friday", fri:"Friday", saturday:"Saturday", sat:"Saturday"
+    };
+
+    const knownCodes = [...new Set(TIMETABLE.filter(i=>!i.special).map(i=>i.code))];
+    const knownFaculty = [...new Set(TIMETABLE.filter(i=>!i.special).map(i=>i.faculty))];
+    const knownRooms = [...new Set(TIMETABLE.filter(i=>i.room).map(i=>i.room))];
+
+    function open(){ panel.classList.add('open'); input.focus(); }
+    function close(){ panel.classList.remove('open'); }
+    fab.addEventListener('click', ()=> panel.classList.contains('open') ? close() : open());
+    closeBtn.addEventListener('click', close);
+
+    function addMsg(html, who){
+      const div = document.createElement('div');
+      div.className = 'msg ' + who;
+      div.innerHTML = html;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+    function addSuggestions(list){
+      const wrap = document.createElement('div');
+      wrap.className = 'msg-suggestions';
+      list.forEach(s=>{
+        const b = document.createElement('button');
+        b.textContent = s;
+        b.addEventListener('click', ()=> handleQuery(s));
+        wrap.appendChild(b);
+      });
+      body.appendChild(wrap);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function greet(){
+      addMsg(`Hi! I can answer things like:`, 'bot');
+      addSuggestions(["When is AI-A?", "Who teaches CRL-B?", "What room is BS-A in?", "My schedule on Wednesday", "What's next?"]);
+    }
+
+    function findCode(text){
+      const t = text.toUpperCase();
+      let best = null;
+      knownCodes.forEach(code=>{
+        // match code as whole word-ish, allow "ai a" -> "AI-A" by normalizing hyphens/spaces
+        const norm = code.replace(/[\s-]/g,'');
+        const tNorm = t.replace(/[\s-]/g,'');
+        if(tNorm.includes(norm) && (!best || norm.length > best.replace(/[\s-]/g,'').length)){
+          best = code;
+        }
+      });
+      return best;
+    }
+    function findFaculty(text){
+      const t = text.toLowerCase();
+      let best = null;
+      knownFaculty.forEach(f=>{
+        const parts = f.toLowerCase().split(/\s+/).filter(p=>p.length>2);
+        const hit = parts.some(p=> t.includes(p));
+        if(hit && (!best || f.length > best.length)) best = f;
+      });
+      return best;
+    }
+    function findRoom(text){
+      const t = text.toUpperCase().replace(/\s+/g,'');
+      let best = null;
+      knownRooms.forEach(r=>{
+        const norm = r.toUpperCase().replace(/\s+/g,'');
+        if(t.includes(norm)) best = r;
+      });
+      return best;
+    }
+    function findDay(text){
+      const t = text.toLowerCase();
+      if(/\btoday\b/.test(t)){
+        const d = dayNames[new Date().getDay()];
+        return d==="Sunday" ? null : d;
+      }
+      if(/\btomorrow\b/.test(t)){
+        const d = dayNames[(new Date().getDay()+1)%7];
+        return d==="Sunday" ? null : d;
+      }
+      for(const key in dayAliases){
+        if(new RegExp('\\b'+key+'\\b').test(t)) return dayAliases[key];
+      }
+      return null;
+    }
+    function findTime(text){
+      const m = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+      if(!m) return null;
+      let h = +m[1], min = m[2]?+m[2]:0, mer = m[3]?m[3].toLowerCase():null;
+      if(!mer) return null; // require am/pm to avoid false positives on stray numbers
+      if(mer==='pm' && h!==12) h+=12;
+      if(mer==='am' && h===12) h=0;
+      return h*60+min;
+    }
+
+    function entryLine(item){
+      if(item.special) return `<span class="mono">${item.code}</span> — ${item.block}`;
+      return `<span class="mono">${item.code}</span> with ${item.faculty}${item.room? ' in '+item.room:''} — ${item.day}, ${item.block}`;
+    }
+
+    function handleQuery(raw){
+      addMsg(raw, 'user');
+      const t = raw.toLowerCase();
+      let reply = '';
+
+      const code = findCode(raw);
+      const faculty = !code ? findFaculty(raw) : null;
+      const room = !code && !faculty ? findRoom(raw) : null;
+      const day = findDay(raw);
+      const time = findTime(raw);
+
+      // Intent: what's next / now
+      if(/\b(next|now|current)\b/.test(t) && !code && !faculty){
+        const today = dayNames[new Date().getDay()];
+        if(today==="Sunday"){ reply = "It's Sunday — no classes today. 🎉"; }
+        else{
+          const nowMin = new Date().getHours()*60+new Date().getMinutes();
+          const todays = TIMETABLE.filter(i=>i.day===today && i.startMin!=null).sort((a,b)=>a.startMin-b.startMin);
+          const ongoing = todays.find(i=> nowMin>=i.startMin && nowMin<i.endMin);
+          const next = todays.find(i=> i.startMin>nowMin);
+          if(ongoing) reply = `Right now: ${entryLine(ongoing)}`;
+          else if(next) reply = `Next up: ${entryLine(next)}`;
+          else reply = `No more classes today (${today}).`;
+        }
+      }
+      // Intent: free at TIME on DAY
+      else if(/\b(free|available)\b/.test(t) && (day || time)){
+        const d = day || dayNames[new Date().getDay()];
+        if(d==="Sunday" || !d){ reply = "No classes on Sunday — you're free all day!"; }
+        else{
+          const items = TIMETABLE.filter(i=>i.day===d && i.startMin!=null);
+          if(time!=null){
+            const clash = items.find(i=> time>=i.startMin && time<i.endMin);
+            reply = clash ? `Not free — you have ${entryLine(clash)}` : `You're free at that time on ${d}.`;
+          } else {
+            reply = `On ${d} you have ${items.length} class block${items.length===1?'':'s'}. Ask me "schedule on ${d}" to see them all.`;
+          }
+        }
+      }
+      // Intent: schedule for a day
+      else if((/\b(schedule|classes|timetable)\b/.test(t) || (day && !code && !faculty)) && day){
+        const items = TIMETABLE.filter(i=>i.day===day);
+        if(items.length===0) reply = `No classes found for ${day}.`;
+        else reply = `<b>${day}</b><br>` + items.map(entryLine).join('<br>');
+      }
+      // Intent: room for code
+      else if(code && /\b(room|where|classroom|which room)\b/.test(t)){
+        const items = TIMETABLE.filter(i=>i.code===code);
+        reply = items.map(i=>`<span class="mono">${i.code}</span> is in <b>${i.room||'no fixed room'}</b> — ${i.day}, ${i.block}`).join('<br>');
+      }
+      // Intent: who teaches code
+      else if(code && /\b(who|teach|faculty|professor|prof)\b/.test(t)){
+        const items = TIMETABLE.filter(i=>i.code===code);
+        reply = items.map(i=>`<span class="mono">${i.code}</span> is taught by <b>${i.faculty}</b> — ${i.day}, ${i.block}`).join('<br>');
+      }
+      // Intent: when is code
+      else if(code){
+        const items = TIMETABLE.filter(i=>i.code===code);
+        reply = items.map(entryLine).join('<br>');
+      }
+      // Intent: faculty's schedule
+      else if(faculty){
+        const items = TIMETABLE.filter(i=>i.faculty===faculty);
+        reply = `<b>${faculty}</b>'s classes:<br>` + items.map(entryLine).join('<br>');
+      }
+      // Intent: room's schedule
+      else if(room){
+        const items = TIMETABLE.filter(i=>i.room===room);
+        reply = `Classes in <b>${room}</b>:<br>` + items.map(entryLine).join('<br>');
+      }
+      else{
+        reply = `I couldn't quite find that. Try a subject code (like "AI-A"), a faculty name, a room (like "FCR 5"), or a day.`;
+      }
+
+      addMsg(reply, 'bot');
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function submit(){
+      const val = input.value.trim();
+      if(!val) return;
+      input.value = '';
+      handleQuery(val);
+    }
+    sendBtn.addEventListener('click', submit);
+    input.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+
+    greet();
+  })();
 </script>
 </body>
 </html>
