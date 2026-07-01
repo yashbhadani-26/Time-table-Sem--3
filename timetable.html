@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 2027 · Semester III Finder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root{
+    --ink:#1b2a4a;
+    --ink-soft:#3a4a6b;
+    --paper:#f6f1e6;
+    --paper-card:#fffdf8;
+    --line:#dcd2ba;
+    --brass:#b8863f;
+    --brass-deep:#8f6528;
+    --red:#a8442f;
+    --green:#4f6d4f;
+    --shadow: 0 1px 2px rgba(27,42,74,0.06), 0 8px 20px rgba(27,42,74,0.06);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(184,134,63,0.08), transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px;}
+
+  /* ===== HEADER ===== */
+  header{
+    padding:40px 20px 28px;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--brass-deep);
+    font-weight:700;
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(32px,5vw,52px);
+    line-height:1.02;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{ font-style:italic; color:var(--brass-deep); }
+  .sub{
+    font-size:15px;
+    color:var(--ink-soft);
+    max-width:560px;
+    line-height:1.5;
+    margin:0;
+  }
+
+  /* ===== SEARCH ===== */
+  .search-zone{
+    margin-top:26px;
+  }
+  .search-box{
+    display:flex;
+    align-items:center;
+    background:var(--paper-card);
+    border:2px solid var(--ink);
+    border-radius:2px;
+    box-shadow:var(--shadow);
+  }
+  .search-box svg{ flex:0 0 auto; margin:0 6px 0 16px; opacity:0.55;}
+  #search{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:16px 14px 16px 4px;
+    font-size:17px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    outline:none;
+  }
+  #search::placeholder{ color:#9a917c; }
+  .clear-btn{
+    border:none;background:none;cursor:pointer;color:var(--ink-soft);
+    padding:10px 16px; font-size:13px; font-family:'JetBrains Mono',monospace;
+    display:none;
+  }
+  .clear-btn.show{display:block;}
+
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:14px;
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:.03em;
+    padding:7px 13px;
+    border:1.5px solid var(--line);
+    border-radius:20px;
+    background:var(--paper-card);
+    cursor:pointer;
+    color:var(--ink-soft);
+    transition:all .15s ease;
+    user-select:none;
+  }
+  .chip:hover{ border-color:var(--brass); color:var(--ink);}
+  .chip.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper);
+  }
+
+  /* ===== NOW BANNER ===== */
+  .now-banner{
+    margin-top:18px;
+    padding:16px 20px;
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:3px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:var(--shadow);
+  }
+  .now-banner .pulse{
+    width:9px;height:9px;border-radius:50%;
+    background:#7fd18a;
+    flex:0 0 auto;
+    box-shadow:0 0 0 0 rgba(127,209,138,0.6);
+    animation:pulse 2s infinite;
+  }
+  .now-banner.upcoming .pulse{ background:var(--brass); box-shadow:0 0 0 0 rgba(184,134,63,0.6); animation:pulse2 2s infinite;}
+  .now-banner.idle .pulse{ background:#8a97b5; animation:none; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(127,209,138,0.55);} 70%{box-shadow:0 0 0 8px rgba(127,209,138,0);} 100%{box-shadow:0 0 0 0 rgba(127,209,138,0);} }
+  @keyframes pulse2{ 0%{box-shadow:0 0 0 0 rgba(184,134,63,0.55);} 70%{box-shadow:0 0 0 8px rgba(184,134,63,0);} 100%{box-shadow:0 0 0 0 rgba(184,134,63,0);} }
+  .now-banner .now-text{ font-size:14px; line-height:1.4; }
+  .now-banner .now-text b{ font-family:'JetBrains Mono',monospace; color:#f1e6cf; }
+  .now-banner .now-tag{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:#b8863f;
+    border:1px solid #4a5a7d;
+    padding:4px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+
+  /* ===== VIEW TOGGLE ===== */
+  .view-toggle{
+    display:inline-flex;
+    border:1.5px solid var(--ink);
+    border-radius:20px;
+    overflow:hidden;
+  }
+  .view-toggle button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    border:none;
+    background:var(--paper-card);
+    color:var(--ink-soft);
+    padding:7px 16px;
+    cursor:pointer;
+  }
+  .view-toggle button.active{ background:var(--ink); color:var(--paper); }
+
+  /* clickable meta bits */
+  .clickable{ cursor:pointer; border-bottom:1px dotted currentColor; }
+  .clickable:hover{ color:var(--brass-deep); }
+
+  /* ===== RESULT META ===== */
+  .meta-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin:30px 0 14px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:8px;
+  }
+  .count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    letter-spacing:.05em;
+  }
+  .count b{ color:var(--ink); font-size:14px;}
+
+  /* ===== CARDS ===== */
+  #results{ display:flex; flex-direction:column; gap:10px; }
+
+  .day-heading{
+    font-family:'Fraunces',serif;
+    font-size:14px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--brass-deep);
+    margin:26px 0 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .day-heading::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .day-heading:first-child{ margin-top:0; }
+
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--ink);
+    border-radius:3px;
+    padding:14px 18px;
+    display:grid;
+    grid-template-columns:100px 1fr auto;
+    gap:14px;
+    align-items:center;
+    box-shadow:var(--shadow);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .card:hover{ transform:translateY(-1px); box-shadow:0 4px 14px rgba(27,42,74,0.12); }
+  .card.special{ border-left-color:var(--green); background:#fbf8ef;}
+
+  .card .code{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:16px;
+    color:var(--ink);
+    letter-spacing:.02em;
+  }
+  .card.special .code{ color:var(--green); font-size:14px; }
+
+  .card .details{ min-width:0; }
+  .card .faculty{
+    font-family:'Fraunces',serif;
+    font-size:16px;
+    font-weight:500;
+    color:var(--ink);
+    margin:0 0 2px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .card .room{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-family:'JetBrains Mono',monospace;
+  }
+  .card .room .dot{ margin:0 6px; opacity:0.4; }
+
+  .card .time{
+    text-align:right;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-family:'JetBrains Mono',monospace;
+    white-space:nowrap;
+  }
+  .card .time .lbl{
+    display:block;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--brass-deep);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+
+  .empty{
+    text-align:center;
+    padding:70px 20px;
+    color:var(--ink-soft);
+  }
+  .empty .big{ font-family:'Fraunces',serif; font-size:22px; color:var(--ink); margin-bottom:6px;}
+
+  .lunch-note{
+    margin-top:40px;
+    padding:14px 18px;
+    background:#f1e6cf;
+    border:1px dashed var(--brass);
+    border-radius:3px;
+    font-size:12.5px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--brass-deep);
+    line-height:1.7;
+  }
+
+  /* ===== GRID VIEW ===== */
+  #gridWrap{ overflow-x:auto; padding-bottom:6px; }
+  .grid-table{
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+    background:var(--paper-card);
+    box-shadow:var(--shadow);
+  }
+  .grid-table th{
+    font-family:'Fraunces',serif;
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--paper);
+    background:var(--ink);
+    padding:10px 8px;
+    text-align:left;
+    border:1px solid var(--ink);
+  }
+  .grid-table td{
+    border:1px solid var(--line);
+    vertical-align:top;
+    padding:8px;
+    font-size:12px;
+    width:16.6%;
+  }
+  .grid-table td.today-col{ background:#fbf3e2; }
+  .grid-time{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:var(--brass-deep);
+    margin-bottom:6px;
+    letter-spacing:.02em;
+  }
+  .grid-entry{
+    margin-bottom:6px;
+    padding-bottom:6px;
+    border-bottom:1px dashed var(--line);
+  }
+  .grid-entry:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0;}
+  .grid-entry .gcode{ font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12.5px; color:var(--ink); }
+  .grid-entry .gfac{ font-size:11px; color:var(--ink-soft); display:block; }
+  .grid-entry .groom{ font-size:10px; color:#a89f89; font-family:'JetBrains Mono',monospace; }
+  .grid-empty-cell{ color:#c3bb9f; font-size:11px; font-style:italic; }
+
+  @media print{
+    header .search-zone, .view-toggle, footer, .now-banner{ display:none; }
+    body{ background:#fff; }
+  }
+
+  footer{
+    text-align:center;
+    margin-top:50px;
+    font-size:11px;
+    color:#a89f89;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.05em;
+  }
+
+  @media (max-width:560px){
+    .card{ grid-template-columns:1fr; text-align:left; gap:6px; }
+    .card .time{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <p class="eyebrow">Class 2027 — Semester III</p>
+  <h1>Find your <em>class</em>,<br>faster.</h1>
+  <p class="sub">Search by subject code, section, faculty name, or classroom — every slot across Monday to Saturday, indexed and searchable in one place.</p>
+
+  <div class="search-zone">
+    <div class="search-box">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="Try “AI-A”, “Geetha Sharma”, “FCR 5”, or “BS”…" autocomplete="off">
+      <button class="clear-btn" id="clearBtn">clear ✕</button>
+    </div>
+    <div class="chip-row" id="dayChips"></div>
+  </div>
+
+  <div class="now-banner" id="nowBanner"></div>
+</header>
+
+<div class="wrap">
+  <div class="meta-row">
+    <span class="count" id="countLabel"><b>0</b> classes shown</span>
+    <div class="view-toggle" id="viewToggle">
+      <button data-view="list" class="active">List</button>
+      <button data-view="grid">Weekly grid</button>
+    </div>
+  </div>
+
+  <div id="results"></div>
+  <div id="gridWrap" style="display:none;"></div>
+
+  <div class="lunch-note" id="lunchNote"></div>
+</div>
+
+<footer class="wrap">Data transcribed from the official Semester III master timetable · tap a day tag to filter</footer>
+
+<script src="data.js"></script>
+<script>
+  const daysOrder = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  let activeDay = null;
+  let currentView = 'list';
+
+  /* ---------- time parsing ---------- */
+  // Parses strings like "8:00 – 10:40 AM", "10:50 AM – 1:30 PM", "2:00 – 4:40 PM"
+  function to24(hour, minute, meridiem){
+    let h = hour % 12;
+    if(meridiem === 'PM') h += 12;
+    return h*60 + minute;
+  }
+  function parseBlock(block){
+    const m = block.match(/(\d+):(\d+)\s*(AM|PM)?\s*[–-]\s*(\d+):(\d+)\s*(AM|PM)/);
+    if(!m) return null;
+    let [, h1, m1, mer1, h2, m2, mer2] = m;
+    h1=+h1; m1=+m1; h2=+h2; m2=+m2;
+    if(!mer1) mer1 = mer2; // inherit end's meridiem
+    return { start: to24(h1,m1,mer1), end: to24(h2,m2,mer2) };
+  }
+  TIMETABLE.forEach(item=>{
+    const t = parseBlock(item.block);
+    item.startMin = t ? t.start : null;
+    item.endMin = t ? t.end : null;
+  });
+
+  /* ---------- day chips ---------- */
+  const dayChips = document.getElementById('dayChips');
+  daysOrder.forEach(d=>{
+    const c = document.createElement('div');
+    c.className = 'chip';
+    c.textContent = d;
+    c.dataset.day = d;
+    c.addEventListener('click', ()=>{
+      activeDay = (activeDay === d) ? null : d;
+      renderChips();
+      render();
+    });
+    dayChips.appendChild(c);
+  });
+  function renderChips(){
+    [...dayChips.children].forEach(c=>{
+      c.classList.toggle('active', c.dataset.day === activeDay);
+    });
+  }
+
+  /* ---------- search ---------- */
+  const searchInput = document.getElementById('search');
+  const clearBtn = document.getElementById('clearBtn');
+  searchInput.addEventListener('input', ()=>{
+    clearBtn.classList.toggle('show', searchInput.value.length>0);
+    render();
+  });
+  clearBtn.addEventListener('click', ()=>{
+    searchInput.value='';
+    clearBtn.classList.remove('show');
+    searchInput.focus();
+    render();
+  });
+  function setSearch(val){
+    searchInput.value = val;
+    clearBtn.classList.toggle('show', val.length>0);
+    if(currentView==='grid'){ setView('list'); }
+    render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ---------- view toggle ---------- */
+  const viewToggle = document.getElementById('viewToggle');
+  viewToggle.addEventListener('click', e=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    setView(btn.dataset.view);
+  });
+  function setView(view){
+    currentView = view;
+    [...viewToggle.children].forEach(b=> b.classList.toggle('active', b.dataset.view===view));
+    document.getElementById('results').style.display = view==='list' ? '' : 'none';
+    document.getElementById('gridWrap').style.display = view==='grid' ? '' : 'none';
+    if(view==='grid') renderGrid();
+  }
+
+  /* ---------- matching ---------- */
+  function matches(item, q){
+    if(!q) return true;
+    const hay = [item.code, item.faculty, item.room, item.day].join(' ').toLowerCase();
+    return hay.includes(q);
+  }
+
+  /* ---------- list render ---------- */
+  function render(){
+    const q = searchInput.value.trim().toLowerCase();
+    let filtered = TIMETABLE.filter(item => matches(item, q) && (!activeDay || item.day===activeDay));
+
+    const resultsEl = document.getElementById('results');
+    resultsEl.innerHTML = '';
+
+    document.getElementById('countLabel').innerHTML = `<b>${filtered.length}</b> classes shown`;
+
+    if(filtered.length===0){
+      resultsEl.innerHTML = `<div class="empty"><div class="big">No matches</div>Try a different subject code, faculty name, or room.</div>`;
+      updateLunchNote();
+      return;
+    }
+
+    daysOrder.forEach(day=>{
+      const items = filtered.filter(i=>i.day===day);
+      if(items.length===0) return;
+      const h = document.createElement('div');
+      h.className = 'day-heading';
+      h.textContent = day;
+      resultsEl.appendChild(h);
+
+      items.forEach(item=>{
+        const card = document.createElement('div');
+        card.className = 'card' + (item.special ? ' special' : '');
+        if(item.special){
+          card.innerHTML = `
+            <div class="code">${item.code}</div>
+            <div class="details"><div class="room">No specific subject assigned for this slot</div></div>
+            <div class="time"><span class="lbl">${day}</span>${item.block}</div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="code"><span class="clickable" data-filter="${item.code}">${item.code}</span></div>
+            <div class="details">
+              <p class="faculty"><span class="clickable" data-filter="${item.faculty}">${item.faculty || '—'}</span></p>
+              <span class="room"><span class="clickable" data-filter="${item.room}">${item.room || 'Room TBA'}</span> <span class="dot">•</span> ${day}</span>
+            </div>
+            <div class="time"><span class="lbl">Time</span>${item.block}</div>
+          `;
+        }
+        resultsEl.appendChild(card);
+      });
+    });
+
+    resultsEl.querySelectorAll('.clickable').forEach(el=>{
+      el.addEventListener('click', ()=> setSearch(el.dataset.filter));
+    });
+
+    updateLunchNote();
+  }
+
+  function updateLunchNote(){
+    const note = document.getElementById('lunchNote');
+    if(!activeDay){
+      note.innerHTML = `🍽️ &nbsp;${LUNCH_NOTE_1}<br>🍽️ &nbsp;${LUNCH_NOTE_2}`;
+    } else if(["Monday","Wednesday","Friday"].includes(activeDay)){
+      note.innerHTML = `🍽️ &nbsp;${LUNCH_NOTE_1}`;
+    } else {
+      note.innerHTML = `🍽️ &nbsp;${LUNCH_NOTE_2}`;
+    }
+  }
+
+  /* ---------- grid view ---------- */
+  function renderGrid(){
+    const gridWrap = document.getElementById('gridWrap');
+    const today = jsDayToName(new Date().getDay());
+
+    // build unique ordered blocks per day -> slot index
+    const dayBlocks = {};
+    daysOrder.forEach(day=>{
+      const seen = [];
+      TIMETABLE.filter(i=>i.day===day).forEach(i=>{
+        if(!seen.includes(i.block)) seen.push(i.block);
+      });
+      dayBlocks[day] = seen;
+    });
+    const maxSlots = Math.max(...daysOrder.map(d=>dayBlocks[d].length));
+
+    let html = `<table class="grid-table"><thead><tr>`;
+    daysOrder.forEach(d=> html += `<th>${d}${d===today?' •':''}</th>`);
+    html += `</tr></thead><tbody>`;
+
+    for(let s=0; s<maxSlots; s++){
+      html += `<tr>`;
+      daysOrder.forEach(day=>{
+        const block = dayBlocks[day][s];
+        const cls = day===today ? ' today-col' : '';
+        if(!block){ html += `<td class="${cls}"><span class="grid-empty-cell">—</span></td>`; return; }
+        const items = TIMETABLE.filter(i=>i.day===day && i.block===block);
+        html += `<td class="${cls}"><div class="grid-time">${block}</div>`;
+        items.forEach(item=>{
+          if(item.special){
+            html += `<div class="grid-entry"><span class="gcode" style="color:var(--green)">${item.code}</span></div>`;
+          } else {
+            html += `<div class="grid-entry">
+              <span class="gcode">${item.code}</span>
+              <span class="gfac">${item.faculty}</span>
+              <span class="groom">${item.room||'—'}</span>
+            </div>`;
+          }
+        });
+        html += `</td>`;
+      });
+      html += `</tr>`;
+    }
+    html += `</tbody></table>`;
+    gridWrap.innerHTML = html;
+  }
+
+  /* ---------- now banner ---------- */
+  function jsDayToName(jsDay){
+    // jsDay: 0=Sun..6=Sat
+    const map = {1:"Monday",2:"Tuesday",3:"Wednesday",4:"Thursday",5:"Friday",6:"Saturday"};
+    return map[jsDay] || null;
+  }
+  function fmtMin(min){
+    let h = Math.floor(min/60), m = min%60;
+    const mer = h>=12 ? 'PM' : 'AM';
+    h = h%12; if(h===0) h=12;
+    return `${h}:${m.toString().padStart(2,'0')} ${mer}`;
+  }
+  function updateNowBanner(){
+    const banner = document.getElementById('nowBanner');
+    const now = new Date();
+    const today = jsDayToName(now.getDay());
+    const nowMin = now.getHours()*60 + now.getMinutes();
+
+    if(!today){
+      banner.className = 'now-banner idle';
+      banner.innerHTML = `<div class="pulse"></div><div class="now-text">It's the weekend — <b>no classes today</b>. Enjoy the break.</div>`;
+      return;
+    }
+
+    const todays = TIMETABLE.filter(i=>i.day===today && i.startMin!=null).sort((a,b)=>a.startMin-b.startMin);
+    const ongoing = todays.find(i=> nowMin>=i.startMin && nowMin<i.endMin);
+    const next = todays.find(i=> i.startMin>nowMin);
+
+    if(ongoing){
+      banner.className = 'now-banner';
+      const label = ongoing.special ? ongoing.code : `${ongoing.code} with ${ongoing.faculty}${ongoing.room? ' in '+ongoing.room:''}`;
+      banner.innerHTML = `<div class="pulse"></div><div class="now-text">Right now: <b>${label}</b>, until ${fmtMin(ongoing.endMin)}</div><div class="now-tag">${today}</div>`;
+    } else if(next){
+      banner.className = 'now-banner upcoming';
+      const mins = next.startMin - nowMin;
+      const label = next.special ? next.code : `${next.code} with ${next.faculty}${next.room? ' in '+next.room:''}`;
+      banner.innerHTML = `<div class="pulse"></div><div class="now-text">Up next: <b>${label}</b> at ${fmtMin(next.startMin)} <span style="opacity:.7">(in ${mins>=60? Math.floor(mins/60)+'h '+(mins%60)+'m' : mins+'m'})</span></div><div class="now-tag">${today}</div>`;
+    } else {
+      banner.className = 'now-banner idle';
+      banner.innerHTML = `<div class="pulse"></div><div class="now-text">No more classes today — <b>you're done for ${today}</b>.</div>`;
+    }
+  }
+
+  renderChips();
+  render();
+  updateNowBanner();
+  setInterval(updateNowBanner, 60000);
+</script>
+</body>
+</html>

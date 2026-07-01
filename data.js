@@ -1,0 +1,91 @@
+// CLASS 2027 - SEMESTER III TIMETABLE DATA
+const TIMETABLE = [
+  // ===== MONDAY =====
+  { day: "Monday", block: "8:00 – 10:40 AM", code: "CRM",   faculty: "J. Clement Sudhahar", room: "FCR 2" },
+  { day: "Monday", block: "8:00 – 10:40 AM", code: "FFT-A", faculty: "Kiran Kumar KV",       room: "FCR 4" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "BMS",   faculty: "Ramesh Murthy",    room: "FCR 2" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "CMA",   faculty: "Niharika Singh",   room: "FCR 4" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "FDRM",  faculty: "V Rajesh Kumar",   room: "FCR 5" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "IMC",   faculty: "Sumanjit Dass",    room: "FCR 6" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "FFT-B", faculty: "Kiran Kumar KV",   room: "FCR 8" },
+  { day: "Monday", block: "10:50 AM – 1:30 PM", code: "IB-B",  faculty: "Soujanya GK",      room: "FCR 7" },
+  { day: "Monday", block: "2:00 – 4:40 PM", code: "AI-A",  faculty: "Raghavendra Rao",  room: "FCR 2" },
+  { day: "Monday", block: "2:00 – 4:40 PM", code: "DM-A",  faculty: "Sumanjit Dass",    room: "FCR 4" },
+  { day: "Monday", block: "2:00 – 4:40 PM", code: "IB-A",  faculty: "Soujanya GK",      room: "FCR 5" },
+  { day: "Monday", block: "2:00 – 4:40 PM", code: "MLFP", faculty: "Yadhu Harikumar",  room: "FCR 6" },
+  { day: "Monday", block: "4:50 – 6:00 PM", code: "Extra Classes", faculty: "", room: "", special: true },
+
+  // ===== TUESDAY =====
+  { day: "Tuesday", block: "9:00 – 11:40 AM", code: "DM-B",  faculty: "Venkatesh Ganapathy", room: "FCR 2" },
+  { day: "Tuesday", block: "9:00 – 11:40 AM", code: "FSA",   faculty: "V Rajesh Kumar",      room: "FCR 4" },
+  { day: "Tuesday", block: "9:00 – 11:40 AM", code: "MT",    faculty: "Hemant Gupta",        room: "FCR 5" },
+  { day: "Tuesday", block: "9:00 – 11:40 AM", code: "WM-A",  faculty: "Sudindra",            room: "FCR 6" },
+  { day: "Tuesday", block: "9:00 – 11:40 AM", code: "ETB-B", faculty: "Veena Bhat",          room: "FCR 7" },
+  { day: "Tuesday", block: "11:50 AM – 2:55 PM", code: "CRL-A", faculty: "Geetha Sharma",        room: "FCR 2" },
+  { day: "Tuesday", block: "11:50 AM – 2:55 PM", code: "CRL-C", faculty: "Abhishek Kumar Jain",  room: "FCR 4" },
+  { day: "Tuesday", block: "11:50 AM – 2:55 PM", code: "BPI-G", faculty: "Vidhyashree",          room: "FCR 5" },
+  { day: "Tuesday", block: "11:50 AM – 2:55 PM", code: "SDM",   faculty: "Harishankar M",        room: "FCR 6" },
+  { day: "Tuesday", block: "11:50 AM – 2:55 PM", code: "T&D",   faculty: "Reema Mohanty",        room: "FCR 7" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "BS-A",  faculty: "Harisankar Muralidharan", room: "FCR 2" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "CRL-B", faculty: "Radhika Ramesh",          room: "FCR 4" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "ETB-C", faculty: "Leena Sidenur",           room: "FCR 5" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "ETB-D", faculty: "Sandhya S",               room: "FCR 6" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "BPI-E", faculty: "Vikas Batnagar",          room: "FCR 7" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "BS-F",  faculty: "Sunil Pillai",            room: "FCR 8" },
+  { day: "Tuesday", block: "3:05 – 5:45 PM", code: "CRL-G", faculty: "Geetha Sharma",           room: "GCR 9" },
+
+  // ===== WEDNESDAY =====
+  { day: "Wednesday", block: "8:00 – 10:40 AM", code: "AI-B", faculty: "Raghavendra Rao",     room: "FCR 2" },
+  { day: "Wednesday", block: "8:00 – 10:40 AM", code: "WM-B", faculty: "Sudindra",            room: "FCR 4" },
+  { day: "Wednesday", block: "8:00 – 10:40 AM", code: "DM-C", faculty: "Sumanjit Dass",       room: "FCR 5" },
+  { day: "Wednesday", block: "8:00 – 10:40 AM", code: "SM",   faculty: "Shafiulla B",         room: "FCR 6" },
+  { day: "Wednesday", block: "8:00 – 10:40 AM", code: "HRP",  faculty: "Abhishek Kumar Jain", room: "FCR 7" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "ETB-A", faculty: "Shweta Puneet",             room: "FCR 2" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "BS-B",  faculty: "Venkatesh Ganapathy",       room: "FCR 4" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "BS-C",  faculty: "C B Venkata Krishna Prasad",room: "FCR 5" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "BS-D",  faculty: "Jangam Suneel Deexith",     room: "FCR 6" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "CRL-E", faculty: "Radhika Ramesh",            room: "FCR 7" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "CRL-F", faculty: "Geetha Sharma",             room: "FCR 8" },
+  { day: "Wednesday", block: "10:50 AM – 1:05 PM", code: "ETB-G", faculty: "Barsha Pattanaik",          room: "GCR 9" },
+  { day: "Wednesday", block: "2:00 – 3:00 PM", code: "Placement Preparation", faculty: "", room: "", special: true },
+  { day: "Wednesday", block: "3:10 – 5:50 PM", code: "BPI-C", faculty: "Vidhyashree",   room: "FCR 2" },
+  { day: "Wednesday", block: "3:10 – 5:50 PM", code: "CRL-D", faculty: "Geetha Sharma", room: "FCR 4" },
+  { day: "Wednesday", block: "3:10 – 5:50 PM", code: "BS-E",  faculty: "Sunil Pillai",  room: "FCR 5" },
+  { day: "Wednesday", block: "3:10 – 5:50 PM", code: "CRL-F", faculty: "Satya T",       room: "FCR 6" },
+  { day: "Wednesday", block: "3:10 – 5:50 PM", code: "MR",    faculty: "KG Sofi Dinesh",room: "FCR 7" },
+
+  // ===== THURSDAY =====
+  { day: "Thursday", block: "9:00 – 11:40 AM", code: "CB",   faculty: "Harish R",              room: "" },
+  { day: "Thursday", block: "9:00 – 11:40 AM", code: "BM-A", faculty: "J. Clement Sudhahar",   room: "FCR 4" },
+  { day: "Thursday", block: "9:00 – 11:40 AM", code: "GCM",  faculty: "Khalid Ul Islam",       room: "FCR 5" },
+  { day: "Thursday", block: "9:00 – 11:40 AM", code: "SA-A", faculty: "GP Girish",             room: "FCR 6" },
+  { day: "Thursday", block: "9:00 – 11:40 AM", code: "MA-A", faculty: "Roshny Unnikrishnan",   room: "FCR 7" },
+  { day: "Thursday", block: "11:50 AM – 2:55 PM", code: "FME-A",  faculty: "Pundareeka Vittala", room: "FCR 2" },
+  { day: "Thursday", block: "11:50 AM – 2:55 PM", code: "PMMF-A", faculty: "Poornima Joshi",     room: "FCR 4" },
+  { day: "Thursday", block: "11:50 AM – 2:55 PM", code: "SCM-A",  faculty: "Ramesh Murthy",      room: "FCR 5" },
+  { day: "Thursday", block: "11:50 AM – 2:55 PM", code: "PM",     faculty: "B. Shafiulla",       room: "FCR 6" },
+  { day: "Thursday", block: "3:05 – 5:45 PM", code: "BPI-D", faculty: "Vikas Batnagar",      room: "FCR 4" },
+  { day: "Thursday", block: "3:05 – 5:45 PM", code: "BPI-F", faculty: "Vidhyashree",         room: "FCR 5" },
+  { day: "Thursday", block: "3:05 – 5:45 PM", code: "BS-G",  faculty: "Jangam Suneel Deexith", room: "FCR 6" },
+
+  // ===== FRIDAY =====
+  { day: "Friday", block: "9:00 – 11:40 AM", code: "BM-B",  faculty: "J. Clement Sudhahar", room: "FCR 2" },
+  { day: "Friday", block: "9:00 – 11:40 AM", code: "SA-B",  faculty: "GP Girish",           room: "FCR 4" },
+  { day: "Friday", block: "9:00 – 11:40 AM", code: "SCM-B", faculty: "Ramesh Murthy",       room: "FCR 5" },
+  { day: "Friday", block: "9:00 – 11:40 AM", code: "MA-B",  faculty: "Roshny Unnikrishnan", room: "FCR 6" },
+  { day: "Friday", block: "11:50 AM – 2:55 PM", code: "HRA",    faculty: "R. Seethalakshmi",   room: "FCR 2" },
+  { day: "Friday", block: "11:50 AM – 2:55 PM", code: "FME-B",  faculty: "Pundareeka Vittala", room: "FCR 4" },
+  { day: "Friday", block: "11:50 AM – 2:55 PM", code: "PMMF-B", faculty: "Poornima Joshi",     room: "FCR 5" },
+  { day: "Friday", block: "11:50 AM – 2:55 PM", code: "B2B",    faculty: "Sofi Dinesh",        room: "FCR 6" },
+  { day: "Friday", block: "3:05 – 4:20 PM", code: "Placement Preparation", faculty: "", room: "", special: true },
+  { day: "Friday", block: "4:30 – 6:00 PM", code: "Student Activities", faculty: "", room: "", special: true },
+
+  // ===== SATURDAY =====
+  { day: "Saturday", block: "8:00 – 10:40 AM", code: "BPI-A", faculty: "Suresh Babu", room: "GCR 1" },
+  { day: "Saturday", block: "8:00 – 10:40 AM", code: "ETB-E", faculty: "Bharat Rao",  room: "GCR 2" },
+  { day: "Saturday", block: "10:50 AM – 1:30 PM", code: "BPI-B", faculty: "Suresh Babu", room: "GCR 1" },
+  { day: "Saturday", block: "10:50 AM – 1:30 PM", code: "ETB-F", faculty: "Bharat Rao",  room: "GCR 2" },
+];
+
+const LUNCH_NOTE_1 = "Lunch Break on the days of 8:00 AM classes — 1:30 PM to 2:00 PM";
+const LUNCH_NOTE_2 = "Lunch Break on the days of 9:00 AM classes — 1:05 PM to 1:40 PM";
